@@ -19,7 +19,6 @@ public class FMenu extends javax.swing.JFrame {
         jMenuItem5 = new javax.swing.JMenuItem();
         jMenuItem1 = new javax.swing.JMenuItem();
         jMenuItem2 = new javax.swing.JMenuItem();
-        jMenu6 = new javax.swing.JMenu();
 
         jMenu3.setText("jMenu3");
 
@@ -54,9 +53,6 @@ public class FMenu extends javax.swing.JFrame {
         jMenu5.add(jMenuItem2);
 
         jMenuBar2.add(jMenu5);
-
-        jMenu6.setText("EXIT");
-        jMenuBar2.add(jMenu6);
 
         setJMenuBar(jMenuBar2);
 
@@ -129,7 +125,6 @@ public class FMenu extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JMenu jMenu3;
     private javax.swing.JMenu jMenu5;
-    private javax.swing.JMenu jMenu6;
     private javax.swing.JMenuBar jMenuBar2;
     private javax.swing.JMenuItem jMenuItem1;
     private javax.swing.JMenuItem jMenuItem2;
