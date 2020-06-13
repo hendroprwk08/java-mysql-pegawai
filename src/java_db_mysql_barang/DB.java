@@ -1,10 +1,7 @@
 package java_db_mysql_barang;
 
 import java.sql.*;
-import java.util.List;
-import java.util.Map;
 import javax.swing.JOptionPane;
-import net.proteanit.sql.DbUtils;
 
 public class DB {
     private static Connection conn;
