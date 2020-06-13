@@ -1,23 +1,18 @@
 package java_db_mysql_barang;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Statement;
 import java.util.ArrayList;
-import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.swing.ComboBoxModel;
 import javax.swing.JOptionPane;
 import net.proteanit.sql.DbUtils;
 
-public class FKaryawan extends javax.swing.JFrame {
+public class FPegawai extends javax.swing.JFrame {
 
     java.sql.Connection conn;
     boolean isEdit;
-    int id_karyawan, id_divisi, id_jabatan;
+    int id_pegawai, id_divisi, id_jabatan;
     double honor_divisi, honor_jabatan, total_gaji;
     String sql;
     
@@ -27,10 +22,10 @@ public class FKaryawan extends javax.swing.JFrame {
     Jabatan jabatan ;
     ArrayList<Jabatan> jabatans = new ArrayList<>();
     
-    public FKaryawan() {
+    public FPegawai() {
         initComponents();
         isEdit = false;
-        id_karyawan = 0;
+        id_pegawai = 0;
         
         showComboDivisi();
         showComboJabatan();
@@ -46,7 +41,7 @@ public class FKaryawan extends javax.swing.JFrame {
             while(rs.next()){
                 divisi = new Divisi(rs.getString("id_divisi"),
                         rs.getString("divisi"),
-                        rs.getString("honor_divisi"));
+                        rs.getString("honor"));
                 divisis.add(divisi);
             }
             
@@ -71,7 +66,7 @@ public class FKaryawan extends javax.swing.JFrame {
             while(rs.next()){
                 jabatan = new Jabatan(rs.getString("id_jabatan"),
                         rs.getString("jabatan"),
-                        rs.getString("honor_jabatan"));
+                        rs.getString("gaji_pokok"));
                 jabatans.add(jabatan);
             }
             
@@ -82,7 +77,7 @@ public class FKaryawan extends javax.swing.JFrame {
             
             DB.close();
         } catch (SQLException ex) {
-            Logger.getLogger(FKaryawan.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(FPegawai.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
     
@@ -95,8 +90,6 @@ public class FKaryawan extends javax.swing.JFrame {
         jLabel1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
-        jLabel4 = new javax.swing.JLabel();
-        jLabel5 = new javax.swing.JLabel();
         jLabel6 = new javax.swing.JLabel();
         jLabel7 = new javax.swing.JLabel();
         jButton1 = new javax.swing.JButton();
@@ -105,7 +98,6 @@ public class FKaryawan extends javax.swing.JFrame {
         tfNama = new javax.swing.JTextField();
         tfAlamat = new javax.swing.JTextField();
         tfUsia = new javax.swing.JTextField();
-        cbStatus = new javax.swing.JComboBox();
         cbDivisi = new javax.swing.JComboBox();
         cbJabatan = new javax.swing.JComboBox();
         jScrollPane2 = new javax.swing.JScrollPane();
@@ -114,7 +106,6 @@ public class FKaryawan extends javax.swing.JFrame {
         jButton4 = new javax.swing.JButton();
         jLabel8 = new javax.swing.JLabel();
         lbGaji = new javax.swing.JLabel();
-        cbKelamin = new javax.swing.JComboBox();
 
         jTable1.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -136,10 +127,6 @@ public class FKaryawan extends javax.swing.JFrame {
         jLabel2.setText("ALAMAT");
 
         jLabel3.setText("USIA");
-
-        jLabel4.setText("KELAMIN");
-
-        jLabel5.setText("STATUS");
 
         jLabel6.setText("DIVISI");
 
@@ -165,8 +152,6 @@ public class FKaryawan extends javax.swing.JFrame {
                 jButton3ActionPerformed(evt);
             }
         });
-
-        cbStatus.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Magang", "Kontrak", "Tetap", "Freelance" }));
 
         cbDivisi.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
         cbDivisi.addActionListener(new java.awt.event.ActionListener() {
@@ -211,39 +196,38 @@ public class FKaryawan extends javax.swing.JFrame {
 
         lbGaji.setText("0");
 
-        cbKelamin.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Wanita", "Pria" }));
-
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(22, 22, 22)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabel1)
-                    .addComponent(jLabel2)
-                    .addComponent(jLabel3)
-                    .addComponent(jLabel4)
-                    .addComponent(jLabel6)
-                    .addComponent(jLabel5)
-                    .addComponent(jLabel7)
-                    .addComponent(jButton1)
-                    .addComponent(jLabel8))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(22, 22, 22)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel1)
+                            .addComponent(jLabel2)
+                            .addComponent(jLabel3)
+                            .addComponent(jLabel6)
+                            .addComponent(jLabel7)
+                            .addComponent(jLabel8))
+                        .addGap(21, 21, 21))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addContainerGap()
+                        .addComponent(jButton1)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)))
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(lbGaji)
                     .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                        .addComponent(cbJabatan, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(cbJabatan, 0, 205, Short.MAX_VALUE)
                         .addComponent(tfNama)
                         .addComponent(tfAlamat)
                         .addComponent(tfUsia, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addComponent(cbStatus, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addGroup(layout.createSequentialGroup()
                             .addComponent(jButton2)
                             .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                             .addComponent(jButton3, javax.swing.GroupLayout.PREFERRED_SIZE, 86, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addComponent(cbDivisi, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(cbKelamin, javax.swing.GroupLayout.Alignment.TRAILING, 0, 205, Short.MAX_VALUE)))
+                        .addComponent(cbDivisi, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
@@ -266,7 +250,7 @@ public class FKaryawan extends javax.swing.JFrame {
                     .addComponent(tfCari, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jButton4))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jLabel2)
@@ -275,14 +259,6 @@ public class FKaryawan extends javax.swing.JFrame {
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(tfUsia, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(jLabel3))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jLabel4)
-                            .addComponent(cbKelamin, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(cbStatus, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jLabel5))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(cbDivisi, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -295,13 +271,13 @@ public class FKaryawan extends javax.swing.JFrame {
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jLabel8)
                             .addComponent(lbGaji))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 25, Short.MAX_VALUE)
+                        .addGap(18, 18, 18)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jButton1)
                             .addComponent(jButton2)
-                            .addComponent(jButton3)))
+                            .addComponent(jButton3)
+                            .addComponent(jButton1)))
                     .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE))
-                .addGap(23, 23, 23))
+                .addContainerGap(19, Short.MAX_VALUE))
         );
 
         pack();
@@ -312,13 +288,11 @@ public class FKaryawan extends javax.swing.JFrame {
         tfNama.setText(null);
         tfAlamat.setText(null);
         tfUsia.setText(null);
-        cbKelamin.setSelectedIndex(0);
-        cbStatus.setSelectedIndex(0);
         cbDivisi.setSelectedIndex(0);
         cbJabatan.setSelectedIndex(0);
         lbGaji.setText("0");
         isEdit = false;
-        id_karyawan = 0;
+        id_pegawai = 0;
     }//GEN-LAST:event_jButton1ActionPerformed
 
     void hitung(){
@@ -351,25 +325,17 @@ public class FKaryawan extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(null, "Nama belum terisi");
             return; //keluar dari void
         }
-        
-        String sql, kl, st;        
+               
         if (isEdit == false){
-            kl = cbKelamin.getSelectedItem().toString();
-            st = cbStatus.getSelectedItem().toString();
-            
             //simpan data 
-            sql = "insert into karyawan (nama, alamat, usia, kelamin, status, id_divisi, id_jabatan)"
-                    + "values ('"+ tfNama.getText() +"', '"+ tfAlamat.getText() +"', '"+ tfUsia.getText() +"' , "
-                    + " '"+ kl +"', '"+ st +"', "+ id_divisi +", "+ id_jabatan +")"; 
+            sql = "insert into pegawai (nama, alamat, usia, kelamin, id_divisi, id_jabatan)"
+                    + "values ('"+ tfNama.getText() +"', '"+ tfAlamat.getText() +"', "+ tfUsia.getText() +", "
+                    + " "+ id_divisi +", "+ id_jabatan +")"; 
         }else{
-            kl = cbKelamin.getSelectedItem().toString();
-            st = cbStatus.getSelectedItem().toString();
-            
             //update data
-            sql = "update karyawan set nama = '"+ tfNama.getText() +"', alamat = '"+ tfAlamat.getText() +"', "
-                    +"usia = '"+ tfUsia.getText() +"', kelamin = '"+ kl +"', status = '"+ st +"', "
-                    + "id_divisi ="+ id_divisi +", id_jabatan = "+ id_jabatan +" " 
-                    + "where id_karyawan = " + id_karyawan;
+            sql = "update pegawai set nama = '"+ tfNama.getText() +"', alamat = '"+ tfAlamat.getText() +"', "              
+                    + "usia = "+ tfUsia.getText() +", id_divisi = "+ id_divisi +", id_jabatan = "+ id_jabatan +" " 
+                    + "where id_pegawai = " + id_pegawai;
         }
         
         boolean success = DB.exec(sql);
@@ -392,15 +358,15 @@ public class FKaryawan extends javax.swing.JFrame {
     private void tblMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tblMouseClicked
         try {
             int row = tbl.getSelectedRow();
-            id_karyawan = Integer.parseInt(tbl.getModel().getValueAt(row, 0).toString());
+            id_pegawai = Integer.parseInt(tbl.getModel().getValueAt(row, 0).toString());
             
-            sql = "SELECT karyawan.id_karyawan, karyawan.nama,  "
-                    +"karyawan.alamat, karyawan.usia,  karyawan.kelamin, "
-                    +"karyawan.status, divisi.divisi, jabatan.jabatan "
-                    +"FROM karyawan karyawan INNER join divisi "
-                    +"on karyawan.id_divisi = divisi.id_divisi "
-                    +"inner join jabatan on karyawan.id_jabatan = jabatan.id_jabatan "
-                    +"where karyawan.id_karyawan = " + id_karyawan;
+            sql = "SELECT pegawai.id_pegawai as ID, pegawai.nama as NAMA,  "
+                    +"pegawai.alamat as ALAMAT, pegawai.usia as USIA, "
+                    +"divisi.divisi as DIVISI, jabatan.jabatan as JABATAN "
+                    +"FROM pegawai INNER join divisi "
+                    +"on pegawai.id_divisi = divisi.id_divisi "
+                    +"inner join jabatan on pegawai.id_jabatan = jabatan.id_jabatan "
+                    +"where pegawai.id_pegawai = " + id_pegawai;
             
             ResultSet rs = DB.read(sql);
             
@@ -410,14 +376,13 @@ public class FKaryawan extends javax.swing.JFrame {
                 tfNama.setText(rs.getString(2));
                 tfAlamat.setText(rs.getString(3));
                 tfUsia.setText(rs.getString(4));
-                cbKelamin.setSelectedItem(rs.getString(5));
-                cbStatus.setSelectedItem(rs.getString(6));
-                cbDivisi.setSelectedItem(rs.getString(7));
-                cbJabatan.setSelectedItem(rs.getString(8));
+                cbDivisi.setSelectedItem(rs.getString(5));
+                cbJabatan.setSelectedItem(rs.getString(6));
                 hitung();
             }
             
             DB.close();
+            isEdit = true;
         } catch (SQLException ex) {
             JOptionPane.showMessageDialog( null, ex);
         }
@@ -425,7 +390,7 @@ public class FKaryawan extends javax.swing.JFrame {
 
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
         // TODO add your handling code here:
-        if (id_karyawan != 0 ){
+        if (id_pegawai != 0 ){
             int resp = JOptionPane.showConfirmDialog(null, 
                         "Hapus "+ tfNama.getText() +"?", 
                         "Konfirmasi",
@@ -433,7 +398,7 @@ public class FKaryawan extends javax.swing.JFrame {
                         JOptionPane.ERROR_MESSAGE);
             
             if (resp == JOptionPane.YES_OPTION){
-                sql = "delete from karyawan where id_karyawan = "+ id_karyawan;
+                sql = "delete from karyawan where id_karyawan = "+ id_pegawai;
                 boolean success = DB.exec(sql);
                 DB.close();
         
@@ -450,20 +415,20 @@ public class FKaryawan extends javax.swing.JFrame {
 
      void showData(String cari){         
         if (cari != null){
-            sql =  "SELECT karyawan.id_karyawan, karyawan.nama,  " 
-                    +"karyawan.alamat, karyawan.usia,  karyawan.kelamin, "
-                    +"karyawan.status, divisi.divisi, jabatan.jabatan " 
-                    +"FROM karyawan karyawan INNER join divisi "
-                    +"on karyawan.id_divisi = divisi.id_divisi "
-                    +"inner join jabatan on karyawan.id_jabatan = jabatan.id_jabatan "
+            sql =  "SELECT pegawai.id_pegawai as ID, pegawai.nama as NAMA, " 
+                    +"pegawai.alamat as ALAMAT, pegawai.usia as USIA, "
+                    +"divisi.divisi as DIVISI, jabatan.jabatan as JABATAN "  
+                    +"FROM pegawai INNER join divisi "
+                    +"on pegawai.id_divisi = divisi.id_divisi "
+                    +"inner join jabatan on pegawai.id_jabatan = jabatan.id_jabatan "
                     + "where nama like '%"+ cari +"%'";
         }else{
-            sql = "SELECT karyawan.id_karyawan, karyawan.nama,  " 
-                    +"karyawan.alamat, karyawan.usia,  karyawan.kelamin, "
-                    +"karyawan.status, divisi.divisi, jabatan.jabatan " 
-                    +"FROM karyawan karyawan INNER join divisi "
-                    +"on karyawan.id_divisi = divisi.id_divisi "
-                    +"inner join jabatan on karyawan.id_jabatan = jabatan.id_jabatan";
+            sql = "SELECT pegawai.id_pegawai as ID, pegawai.nama as NAMA, " 
+                    +"pegawai.alamat as ALAMAT, pegawai.usia as USIA, "
+                    +"divisi.divisi as DIVISI, jabatan.jabatan as JABATAN " 
+                    +"FROM pegawai INNER join divisi "
+                    +"on pegawai.id_divisi = divisi.id_divisi "
+                    +"inner join jabatan on pegawai.id_jabatan = jabatan.id_jabatan";
         }
         
         ResultSet rs = DB.read(sql);
@@ -485,20 +450,21 @@ public class FKaryawan extends javax.swing.JFrame {
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(FKaryawan.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(FPegawai.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(FKaryawan.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(FPegawai.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(FKaryawan.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(FPegawai.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(FKaryawan.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(FPegawai.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
+        //</editor-fold>
         //</editor-fold>
 
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new FKaryawan().setVisible(true);
+                new FPegawai().setVisible(true);
             }
         });
     }
@@ -506,8 +472,6 @@ public class FKaryawan extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JComboBox cbDivisi;
     private javax.swing.JComboBox cbJabatan;
-    private javax.swing.JComboBox cbKelamin;
-    private javax.swing.JComboBox cbStatus;
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
     private javax.swing.JButton jButton3;
@@ -515,8 +479,6 @@ public class FKaryawan extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
-    private javax.swing.JLabel jLabel4;
-    private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
     private javax.swing.JLabel jLabel8;

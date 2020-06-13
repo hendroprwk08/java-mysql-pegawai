@@ -231,15 +231,17 @@ public class FDivisi extends javax.swing.JFrame {
 
     void showData(String s){
         if (s != null){
-            sql = "select * from divisi "
+            sql = "select id_divisi as ID, divisi as DIVISI, honor as HONOR from divisi "
                     + "where divisi like '%"+ tfCari.getText() +"%'";
         }else{
-            sql = "select * from divisi";
+            sql = "select id_divisi as ID, divisi as DIVISI, honor as HONOR from divisi";
         }
         
         ResultSet rs = DB.read(sql);
         tbl.setModel(DbUtils.resultSetToTableModel(rs));
         DB.close();
+        
+        //modifikasi header ( opsional )
     }
     
     public static void main(String args[]) {
