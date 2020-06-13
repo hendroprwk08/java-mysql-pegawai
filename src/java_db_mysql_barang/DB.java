@@ -15,45 +15,45 @@ public class DB {
             conn = (Connection) DriverManager.getConnection(DB, username, password); 
 
             return conn;               
-        } catch (Exception e) {
+        } catch (SQLException e) {
             JOptionPane.showMessageDialog(null, e.toString());
         } 
 
         return null;
     }
     
-    public static boolean exec(String sql){
+    public static boolean exec(String sql) throws SQLException{
         try {
-            conn = (Connection) java_db_mysql_barang.DB.connectDB();            
+            conn = (Connection) connectDB();            
             Statement pst = conn.createStatement();
             pst.execute(sql);
             
             return true;
-        } catch (Exception e) {
+        } catch (SQLException e) {
             JOptionPane.showMessageDialog(null, e.toString());
         }
         
         return false;
     }
     
-    public static ResultSet read(String sql){
+    public static ResultSet read(String sql) throws SQLException{
         ResultSet rs = null;
         
         try {
-            conn = (Connection) java_db_mysql_barang.DB.connectDB();            
+            conn = (Connection) connectDB();            
             Statement st = conn.createStatement();
             rs = st.executeQuery(sql);
-        } catch (Exception e) {
+        } catch (SQLException e) {
             JOptionPane.showMessageDialog(null, e.toString());
         }
         
         return rs;
     }
     
-    public static void close(){
+    public static void close() throws SQLException{
         try{
             conn.close();
-        } catch (Exception e) {
+        } catch (SQLException e) {
             JOptionPane.showMessageDialog(null, e.toString());
         }
     }
