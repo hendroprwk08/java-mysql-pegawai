@@ -218,9 +218,6 @@
     <Component class="javax.swing.JTextField" name="tfNama">
     </Component>
     <Component class="javax.swing.JTextField" name="tfAlamat">
-      <Events>
-        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="tfAlamatActionPerformed"/>
-      </Events>
     </Component>
     <Component class="javax.swing.JTextField" name="tfUsia">
     </Component>

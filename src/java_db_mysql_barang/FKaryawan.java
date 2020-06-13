@@ -7,6 +7,8 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.ComboBoxModel;
 import javax.swing.JOptionPane;
 import net.proteanit.sql.DbUtils;
@@ -17,6 +19,7 @@ public class FKaryawan extends javax.swing.JFrame {
     boolean isEdit;
     int id_karyawan, id_divisi, id_jabatan;
     double honor_divisi, honor_jabatan, total_gaji;
+    String sql;
     
     Divisi divisi;
     ArrayList<Divisi> divisis = new ArrayList<>();
@@ -35,17 +38,15 @@ public class FKaryawan extends javax.swing.JFrame {
     }
 
     void showComboDivisi(){
-        cbDivisi.removeAllItems();
         try {
-            conn = (Connection) java_db_mysql_barang.DB.connectDB();
-            PreparedStatement pst = conn.prepareStatement("select * from divisi");
-            ResultSet rs = pst.executeQuery();
+            cbDivisi.removeAllItems();            
+            ResultSet rs = DB.read("select * from divisi");
             
             //masukkan kedalam class
             while(rs.next()){
                 divisi = new Divisi(rs.getString("id_divisi"),
                         rs.getString("divisi"),
-                        rs.getString("honor_divisi"));                
+                        rs.getString("honor_divisi"));
                 divisis.add(divisi);
             }
             
@@ -54,24 +55,23 @@ public class FKaryawan extends javax.swing.JFrame {
                 cbDivisi.addItem(divisis.get(i).getDivisi());
             }
             
-            conn.close(); 
+            DB.close();
         } catch (SQLException ex) {
-            JOptionPane.showMessageDialog(null, ex.toString());
+             JOptionPane.showMessageDialog(null, ex);
         }
     }
     
     void showComboJabatan(){
-        cbJabatan.removeAllItems();
         try {
-            conn = (Connection) java_db_mysql_barang.DB.connectDB();
-            PreparedStatement pst = conn.prepareStatement("select * from jabatan");
-            ResultSet rs = pst.executeQuery();
+            cbJabatan.removeAllItems();
+            
+            ResultSet rs = DB.read("select * from jabatan");
             
             //masukkan kedalam class
             while(rs.next()){
                 jabatan = new Jabatan(rs.getString("id_jabatan"),
                         rs.getString("jabatan"),
-                        rs.getString("honor_jabatan"));                
+                        rs.getString("honor_jabatan"));
                 jabatans.add(jabatan);
             }
             
@@ -80,9 +80,9 @@ public class FKaryawan extends javax.swing.JFrame {
                 cbJabatan.addItem(jabatans.get(i).getJabatan());
             }
             
-            conn.close(); 
+            DB.close();
         } catch (SQLException ex) {
-            JOptionPane.showMessageDialog(null, ex.toString());
+            Logger.getLogger(FKaryawan.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
     
@@ -163,12 +163,6 @@ public class FKaryawan extends javax.swing.JFrame {
         jButton3.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButton3ActionPerformed(evt);
-            }
-        });
-
-        tfAlamat.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                tfAlamatActionPerformed(evt);
             }
         });
 
@@ -327,10 +321,6 @@ public class FKaryawan extends javax.swing.JFrame {
         id_karyawan = 0;
     }//GEN-LAST:event_jButton1ActionPerformed
 
-    private void tfAlamatActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_tfAlamatActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_tfAlamatActionPerformed
-
     void hitung(){
         double total = honor_jabatan + honor_divisi;
         lbGaji.setText(Double.toString(total));
@@ -382,20 +372,15 @@ public class FKaryawan extends javax.swing.JFrame {
                     + "where id_karyawan = " + id_karyawan;
         }
         
-        try {
-            conn = (Connection) java_db_mysql_barang.DB.connectDB();
-            
-            PreparedStatement pst = conn.prepareStatement(sql);
-            pst.execute(sql);
-            conn.close();
-
-            JOptionPane.showMessageDialog(null, "Data disimpan!");
-
+        boolean success = DB.exec(sql);
+        DB.close();
+        
+        if ( success ){
             jButton1ActionPerformed(null); //panggil fungsi btTambah
             showData(null);
             isEdit = false;
-        } catch (SQLException sQLException) {
-            JOptionPane.showMessageDialog(null, sQLException.toString());
+        }else{
+            JOptionPane.showMessageDialog( null, "Gagal eksekusi");
         }
     }//GEN-LAST:event_jButton2ActionPerformed
 
@@ -405,19 +390,19 @@ public class FKaryawan extends javax.swing.JFrame {
     }//GEN-LAST:event_jButton4ActionPerformed
 
     private void tblMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tblMouseClicked
-        int row = tbl.getSelectedRow();
-        id_karyawan = Integer.parseInt(tbl.getModel().getValueAt(row, 0).toString());
-        
         try {
-            conn = (Connection) java_db_mysql_barang.DB.connectDB();
-            Statement st = conn.createStatement();
-            ResultSet rs = st.executeQuery("SELECT karyawan.id_karyawan, karyawan.nama,  " 
-                                                                            +"karyawan.alamat, karyawan.usia,  karyawan.kelamin, "
-                                                                            +"karyawan.status, divisi.divisi, jabatan.jabatan " 
-                                                                            +"FROM karyawan karyawan INNER join divisi "
-                                                                            +"on karyawan.id_divisi = divisi.id_divisi "
-                                                                            +"inner join jabatan on karyawan.id_jabatan = jabatan.id_jabatan "
-                                                                            +"where karyawan.id_karyawan = " + id_karyawan);
+            int row = tbl.getSelectedRow();
+            id_karyawan = Integer.parseInt(tbl.getModel().getValueAt(row, 0).toString());
+            
+            sql = "SELECT karyawan.id_karyawan, karyawan.nama,  "
+                    +"karyawan.alamat, karyawan.usia,  karyawan.kelamin, "
+                    +"karyawan.status, divisi.divisi, jabatan.jabatan "
+                    +"FROM karyawan karyawan INNER join divisi "
+                    +"on karyawan.id_divisi = divisi.id_divisi "
+                    +"inner join jabatan on karyawan.id_jabatan = jabatan.id_jabatan "
+                    +"where karyawan.id_karyawan = " + id_karyawan;
+            
+            ResultSet rs = DB.read(sql);
             
             while(rs.next()){
                 System.out.println(rs.getString(1)  +" " +  rs.getString(2)  + " "+ rs.getString(3) + " " + rs.getString(4) + " " + rs.getString(5) );
@@ -432,10 +417,9 @@ public class FKaryawan extends javax.swing.JFrame {
                 hitung();
             }
             
-            conn.close(); 
-            isEdit = true;
+            DB.close();
         } catch (SQLException ex) {
-            JOptionPane.showMessageDialog(null, ex.toString());
+            JOptionPane.showMessageDialog( null, ex);
         }
     }//GEN-LAST:event_tblMouseClicked
 
@@ -449,51 +433,42 @@ public class FKaryawan extends javax.swing.JFrame {
                         JOptionPane.ERROR_MESSAGE);
             
             if (resp == JOptionPane.YES_OPTION){
-                try {
-                    conn = (Connection) java_db_mysql_barang.DB.connectDB();
-                    String sql = "delete from karyawan where id_karyawan = "+ id_karyawan;
-                    PreparedStatement pst = conn.prepareStatement(sql);
-                    pst.execute(sql);
-                    conn.close();
-
+                sql = "delete from karyawan where id_karyawan = "+ id_karyawan;
+                boolean success = DB.exec(sql);
+                DB.close();
+        
+                if ( success ){
                     jButton1ActionPerformed(null); //panggil fungsi btTambah
                     showData(null);
                     isEdit = false;
-                } catch (SQLException sQLException) {
-                    JOptionPane.showMessageDialog(null, sQLException.toString());
+                }else{
+                    JOptionPane.showMessageDialog( null, "Gagal eksekusi");
                 }
             }
         }
     }//GEN-LAST:event_jButton3ActionPerformed
 
-     void showData(String s){
-        try {
-            conn = (Connection) java_db_mysql_barang.DB.connectDB();
-            Statement st = conn.createStatement();
-            ResultSet sql;
-            
-            if (s != null){
-                 sql =  st.executeQuery("SELECT karyawan.id_karyawan, karyawan.nama,  " 
-                            +"karyawan.alamat, karyawan.usia,  karyawan.kelamin, "
-                            +"karyawan.status, divisi.divisi, jabatan.jabatan " 
-                            +"FROM karyawan karyawan INNER join divisi "
-                            +"on karyawan.id_divisi = divisi.id_divisi "
-                            +"inner join jabatan on karyawan.id_jabatan = jabatan.id_jabatan "
-                            + "where nama like '%"+ tfCari.getText() +"%'");
-            }else{
-                sql =  st.executeQuery("SELECT karyawan.id_karyawan, karyawan.nama,  " 
-                            +"karyawan.alamat, karyawan.usia,  karyawan.kelamin, "
-                            +"karyawan.status, divisi.divisi, jabatan.jabatan " 
-                            +"FROM karyawan karyawan INNER join divisi "
-                            +"on karyawan.id_divisi = divisi.id_divisi "
-                            +"inner join jabatan on karyawan.id_jabatan = jabatan.id_jabatan");
-            }
-            
-            tbl.setModel(DbUtils.resultSetToTableModel(sql));
-            conn.close(); 
-        } catch (SQLException ex) {
-            JOptionPane.showMessageDialog(null, ex.toString());
+     void showData(String cari){         
+        if (cari != null){
+            sql =  "SELECT karyawan.id_karyawan, karyawan.nama,  " 
+                    +"karyawan.alamat, karyawan.usia,  karyawan.kelamin, "
+                    +"karyawan.status, divisi.divisi, jabatan.jabatan " 
+                    +"FROM karyawan karyawan INNER join divisi "
+                    +"on karyawan.id_divisi = divisi.id_divisi "
+                    +"inner join jabatan on karyawan.id_jabatan = jabatan.id_jabatan "
+                    + "where nama like '%"+ cari +"%'";
+        }else{
+            sql = "SELECT karyawan.id_karyawan, karyawan.nama,  " 
+                    +"karyawan.alamat, karyawan.usia,  karyawan.kelamin, "
+                    +"karyawan.status, divisi.divisi, jabatan.jabatan " 
+                    +"FROM karyawan karyawan INNER join divisi "
+                    +"on karyawan.id_divisi = divisi.id_divisi "
+                    +"inner join jabatan on karyawan.id_jabatan = jabatan.id_jabatan";
         }
+        
+        ResultSet rs = DB.read(sql);
+        tbl.setModel(DbUtils.resultSetToTableModel(rs));
+        DB.close();
     }
      
     public static void main(String args[]) {

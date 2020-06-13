@@ -22,6 +22,7 @@ public class FJabatan extends javax.swing.JFrame {
     java.sql.Connection conn;
     boolean isEdit;
     int id;
+    String sql;
     
     public FJabatan() {
         initComponents();
@@ -31,24 +32,17 @@ public class FJabatan extends javax.swing.JFrame {
         showData(null);
     }
     
-    void showData(String s){
-        try {
-            conn = (Connection) java_db_mysql_barang.DB.connectDB();
-            Statement st = conn.createStatement();
-            ResultSet sql;
-            
-            if (s != null){
-                sql = st.executeQuery("select * from jabatan "
-                        + "where jabatan like '%"+ tfCari.getText() +"%'");
-            }else{
-                sql = st.executeQuery("select * from jabatan");
-            }
-            
-            tbl.setModel(DbUtils.resultSetToTableModel(sql));
-            conn.close(); 
-        } catch (SQLException ex) {
-            JOptionPane.showMessageDialog(null, ex.toString());
+    void showData(String s){           
+        if (s != null){
+            sql = "select * from jabatan "
+                    + "where jabatan like '%"+ tfCari.getText() +"%'";
+        }else{
+            sql = "select * from jabatan";
         }
+
+        ResultSet rs = DB.read(sql);
+        tbl.setModel(DbUtils.resultSetToTableModel(rs));
+        DB.close();
     }
 
     /**
@@ -194,8 +188,7 @@ public class FJabatan extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(null, "Lengkapi data");
             return; //keluar dari void
         }
-
-        String sql;
+        
         if (isEdit == false){
             //simpan data
             sql = "insert into jabatan (jabatan, honor_jabatan)"
@@ -207,21 +200,16 @@ public class FJabatan extends javax.swing.JFrame {
             + "honor_jabatan = "+ tfHonor.getText() +" "
             + "where id_jabatan= " + id;
         }
-
-        try {
-            conn = (Connection) java_db_mysql_barang.DB.connectDB();
-
-            PreparedStatement pst = conn.prepareStatement(sql);
-            pst.execute(sql);
-            conn.close();
-
-            JOptionPane.showMessageDialog(null, "Data disimpan!");
-
+        
+        boolean success = DB.exec(sql);
+        DB.close();
+        
+        if ( success ){
             btTambahActionPerformed(null); //panggil fungsi btTambah
             showData(null);
             isEdit = false;
-        } catch (SQLException sQLException) {
-            JOptionPane.showMessageDialog(null, sQLException.toString());
+        }else{
+            JOptionPane.showMessageDialog( null, "Gagal eksekusi");
         }
     }//GEN-LAST:event_btSimpanActionPerformed
 
@@ -245,18 +233,16 @@ public class FJabatan extends javax.swing.JFrame {
                 JOptionPane.ERROR_MESSAGE);
 
             if (resp == JOptionPane.YES_OPTION){
-                try {
-                    conn = (Connection) java_db_mysql_barang.DB.connectDB();
-                    String sql = "delete from jabatan where id_jabatan = "+id;
-                    PreparedStatement pst = conn.prepareStatement(sql);
-                    pst.execute(sql);
-                    conn.close();
-
+                sql = "delete from jabatan where id_jabatan = "+ id;
+             
+                boolean success = DB.exec(sql);
+                
+                if ( success ){
                     btTambahActionPerformed(null); //panggil fungsi btTambah
                     showData(null);
                     isEdit = false;
-                } catch (SQLException sQLException) {
-                    JOptionPane.showMessageDialog(null, sQLException.toString());
+                }else{
+                    JOptionPane.showMessageDialog( null, "Gagal eksekusi");
                 }
             }
         }

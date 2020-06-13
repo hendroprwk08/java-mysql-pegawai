@@ -9,6 +9,7 @@ public class FDivisi extends javax.swing.JFrame {
     java.sql.Connection conn;
     boolean isEdit;
     int id;
+    String sql;
     
     public FDivisi() {
         initComponents();
@@ -163,34 +164,28 @@ public class FDivisi extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(null, "Lengkapi data");
             return; //keluar dari void
         }
-        
-        String sql;        
+          
         if (isEdit == false){
             //simpan data 
-            sql = "insert into divisi (divisi, honor_divisi)" 
+            sql = "insert into divisi (divisi, honor)" 
                                                                                                                                                                                                                                            + "values ('"+ tfDivisi.getText() +"', "
                     + ""+ tfHonor.getText() +")";
         }else{
             //update data
             sql = "update divisi set divisi = '"+ tfDivisi.getText() +"', "
-                    + "honor_divisi = "+ tfHonor.getText() +" "
+                    + "honor = "+ tfHonor.getText() +" "
                     + "where id_divisi = " + id;
         }
         
-        try {
-            conn = (Connection) java_db_mysql_barang.DB.connectDB();
-            
-            PreparedStatement pst = conn.prepareStatement(sql);
-            pst.execute(sql);
-            conn.close();
-
-            JOptionPane.showMessageDialog(null, "Data disimpan!");
-
+        boolean success = DB.exec(sql);
+        DB.close();
+        
+        if ( success ){
             btTambahActionPerformed(null); //panggil fungsi btTambah
             showData(null);
             isEdit = false;
-        } catch (SQLException sQLException) {
-            JOptionPane.showMessageDialog(null, sQLException.toString());
+        }else{
+            JOptionPane.showMessageDialog( null, "Gagal eksekusi");
         }
     }//GEN-LAST:event_btSimpanActionPerformed
 
@@ -207,25 +202,23 @@ public class FDivisi extends javax.swing.JFrame {
     private void btHapusActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btHapusActionPerformed
         // TODO add your handling code here:
         if (id != 0 ){
-            int resp = JOptionPane.showConfirmDialog(null, 
+            int response = JOptionPane.showConfirmDialog(null, 
                         "Hapus "+ tfDivisi.getText() +"?", 
                         "Konfirmasi",
                         JOptionPane.YES_NO_OPTION, 
                         JOptionPane.ERROR_MESSAGE);
             
-            if (resp == JOptionPane.YES_OPTION){
-                try {
-                    conn = (Connection) java_db_mysql_barang.DB.connectDB();
-                    String sql = "delete from divisi where id_divisi = "+id;
-                    PreparedStatement pst = conn.prepareStatement(sql);
-                    pst.execute(sql);
-                    conn.close();
-
+            if (response == JOptionPane.YES_OPTION){
+                String sql = "delete from divisi where id_divisi = "+ id;
+                    
+                boolean success = DB.exec(sql);
+        
+                if ( success ){
                     btTambahActionPerformed(null); //panggil fungsi btTambah
                     showData(null);
                     isEdit = false;
-                } catch (SQLException sQLException) {
-                    JOptionPane.showMessageDialog(null, sQLException.toString());
+                }else{
+                    JOptionPane.showMessageDialog( null, "Gagal eksekusi");
                 }
             }
         }
@@ -237,23 +230,16 @@ public class FDivisi extends javax.swing.JFrame {
     }//GEN-LAST:event_btCariActionPerformed
 
     void showData(String s){
-        try {
-            conn = (Connection) java_db_mysql_barang.DB.connectDB();
-            Statement st = conn.createStatement();
-            ResultSet sql;
-            
-            if (s != null){
-                sql = st.executeQuery("select * from divisi "
-                        + "where divisi like '%"+ tfCari.getText() +"%'");
-            }else{
-                sql = st.executeQuery("select * from divisi");
-            }
-            
-            tbl.setModel(DbUtils.resultSetToTableModel(sql));
-            conn.close(); 
-        } catch (SQLException ex) {
-            JOptionPane.showMessageDialog(null, ex.toString());
+        if (s != null){
+            sql = "select * from divisi "
+                    + "where divisi like '%"+ tfCari.getText() +"%'";
+        }else{
+            sql = "select * from divisi";
         }
+        
+        ResultSet rs = DB.read(sql);
+        tbl.setModel(DbUtils.resultSetToTableModel(rs));
+        DB.close();
     }
     
     public static void main(String args[]) {
