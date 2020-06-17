@@ -6,7 +6,7 @@ import javax.swing.JOptionPane;
 public class DB {
     private static Connection conn;
     
-    public static Connection connectDB() throws SQLException{
+    public static Connection connectDB(){
         try {
             String DB = "jdbc:mysql://localhost:3306/db_hrd_baru";
             String username = "root";
@@ -22,7 +22,7 @@ public class DB {
         return null;
     }
     
-    public static boolean exec(String sql) throws SQLException{
+    public static boolean exec(String sql){
         try {
             conn = (Connection) connectDB();            
             Statement pst = conn.createStatement();
@@ -36,7 +36,7 @@ public class DB {
         return false;
     }
     
-    public static ResultSet read(String sql) throws SQLException{
+    public static ResultSet read(String sql){
         ResultSet rs = null;
         
         try {
@@ -50,7 +50,7 @@ public class DB {
         return rs;
     }
     
-    public static void close() throws SQLException{
+    public static void close(){
         try{
             conn.close();
         } catch (SQLException e) {
