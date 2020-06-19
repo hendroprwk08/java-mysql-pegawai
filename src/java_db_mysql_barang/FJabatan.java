@@ -8,6 +8,9 @@ package java_db_mysql_barang;
 import java.sql.ResultSet;
 import javax.swing.JOptionPane;
 import net.proteanit.sql.DbUtils;
+import net.sf.jasperreports.engine.JasperFillManager;
+import net.sf.jasperreports.engine.JasperPrint;
+import net.sf.jasperreports.view.JasperViewer;
 
 /**
  *
@@ -76,6 +79,7 @@ public class FJabatan extends javax.swing.JFrame {
         tfTKesehatan = new javax.swing.JTextField();
         jLabel7 = new javax.swing.JLabel();
         tfPDinas = new javax.swing.JTextField();
+        btCetak = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -139,6 +143,13 @@ public class FJabatan extends javax.swing.JFrame {
 
         jLabel7.setText("PERJ. DINAS");
 
+        btCetak.setText("CETAK");
+        btCetak.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btCetakActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -180,6 +191,8 @@ public class FJabatan extends javax.swing.JFrame {
                             .addComponent(tfPDinas, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 190, javax.swing.GroupLayout.PREFERRED_SIZE))))
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
+                        .addGap(9, 9, 9)
+                        .addComponent(btCetak)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(tfCari, javax.swing.GroupLayout.PREFERRED_SIZE, 176, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -198,7 +211,8 @@ public class FJabatan extends javax.swing.JFrame {
                     .addComponent(jLabel1)
                     .addComponent(tfJabatan, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(tfCari, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(btCari))
+                    .addComponent(btCari)
+                    .addComponent(btCetak))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
@@ -323,6 +337,15 @@ public class FJabatan extends javax.swing.JFrame {
         showData(tfCari.getText().toString());
     }//GEN-LAST:event_btCariActionPerformed
 
+    private void btCetakActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btCetakActionPerformed
+        try {
+            JasperPrint jp = JasperFillManager.fillReport(getClass().getResourceAsStream("jabatan.jasper"), null, DB.connectDB());
+            JasperViewer.viewReport(jp, false);
+        } catch(Exception e) {
+            JOptionPane.showMessageDialog(rootPane, e);
+        }
+    }//GEN-LAST:event_btCetakActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -360,6 +383,7 @@ public class FJabatan extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btCari;
+    private javax.swing.JButton btCetak;
     private javax.swing.JButton btHapus;
     private javax.swing.JButton btSimpan;
     private javax.swing.JButton btTambah;

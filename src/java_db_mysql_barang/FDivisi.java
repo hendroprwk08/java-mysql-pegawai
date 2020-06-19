@@ -3,6 +3,9 @@ package java_db_mysql_barang;
 import java.sql.*;
 import javax.swing.JOptionPane;
 import net.proteanit.sql.DbUtils; //rs2xml.jar
+import net.sf.jasperreports.engine.JasperFillManager;
+import net.sf.jasperreports.engine.JasperPrint;
+import net.sf.jasperreports.view.JasperViewer;
 
 public class FDivisi extends javax.swing.JFrame {
 
@@ -34,6 +37,7 @@ public class FDivisi extends javax.swing.JFrame {
         btTambah = new javax.swing.JButton();
         tfCari = new javax.swing.JTextField();
         btCari = new javax.swing.JButton();
+        btCetak = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -87,6 +91,13 @@ public class FDivisi extends javax.swing.JFrame {
             }
         });
 
+        btCetak.setText("CETAK");
+        btCetak.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btCetakActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -115,7 +126,9 @@ public class FDivisi extends javax.swing.JFrame {
                                 .addComponent(btSimpan)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addComponent(btHapus)
-                                .addGap(85, 85, 85))))))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(btCetak)
+                                .addGap(14, 14, 14))))))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(tfCari, javax.swing.GroupLayout.PREFERRED_SIZE, 141, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -138,7 +151,8 @@ public class FDivisi extends javax.swing.JFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btSimpan)
                     .addComponent(btHapus)
-                    .addComponent(btTambah))
+                    .addComponent(btTambah)
+                    .addComponent(btCetak))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(tfCari, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -205,8 +219,7 @@ public class FDivisi extends javax.swing.JFrame {
             int response = JOptionPane.showConfirmDialog(null, 
                         "Hapus "+ tfDivisi.getText() +"?", 
                         "Konfirmasi",
-                        JOptionPane.YES_NO_OPTION, 
-                        JOptionPane.ERROR_MESSAGE);
+                        JOptionPane.YES_NO_OPTION);
             
             if (response == JOptionPane.YES_OPTION){
                 String sql = "delete from divisi where id_divisi = "+ id;
@@ -228,6 +241,15 @@ public class FDivisi extends javax.swing.JFrame {
         // TODO add your handling code here:
         showData(tfCari.getText().toString());
     }//GEN-LAST:event_btCariActionPerformed
+
+    private void btCetakActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btCetakActionPerformed
+        try {
+            JasperPrint jp = JasperFillManager.fillReport(getClass().getResourceAsStream("divisi.jasper"), null, DB.connectDB());
+            JasperViewer.viewReport(jp, false);
+        } catch(Exception e) {
+            JOptionPane.showMessageDialog(rootPane, e);
+        }
+    }//GEN-LAST:event_btCetakActionPerformed
 
     void showData(String s){
         if (s != null){
@@ -278,6 +300,7 @@ public class FDivisi extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btCari;
+    private javax.swing.JButton btCetak;
     private javax.swing.JButton btHapus;
     private javax.swing.JButton btSimpan;
     private javax.swing.JButton btTambah;
