@@ -4,9 +4,13 @@
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
             <file>file:/D:/pegawai_app/src/pegawai_app/Main.java</file>
+            <file>file:/D:/pegawai_app/src/pegawai_app/DB.java</file>
             <file>file:/D:/pegawai_app/src/pegawai_app/FPegawai.java</file>
-            <file>file:/D:/pegawai_app/src/pegawai_app/RPegawai.jrxml</file>
+            <file>file:/D:/pegawai_app/src/pegawai_app/FCetak.java</file>
+            <file>file:/D:/pegawai_app/src/pegawai_app/FMenu.java</file>
+            <file>file:/D:/pegawai_app/src/pegawai_app/RPegawaiParameter.jrxml</file>
             <file>file:/D:/pegawai_app/src/pegawai_app/FDivisi.java</file>
+            <file>file:/D:/pegawai_app/src/pegawai_app/Pegawai.java</file>
         </group>
     </open-files>
 </project-private>

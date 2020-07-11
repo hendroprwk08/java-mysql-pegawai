@@ -1,0 +1,239 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="null" language="groovy" pageWidth="842" pageHeight="595" orientation="Landscape" columnWidth="802" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="4c788178-e30b-403f-b439-2c63d0b9afd4">
+	<property name="ireport.zoom" value="1.0"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<style name="Title" forecolor="#FFFFFF" fontName="Times New Roman" fontSize="50" isBold="false" pdfFontName="Times-Bold"/>
+	<style name="SubTitle" forecolor="#CCCCCC" fontName="Times New Roman" fontSize="18" isBold="false" pdfFontName="Times-Roman"/>
+	<style name="Column header" forecolor="#666666" fontName="Times New Roman" fontSize="14" isBold="true" pdfFontName="Times-Roman"/>
+	<style name="Detail" mode="Transparent" fontName="Times New Roman" pdfFontName="Times-Roman"/>
+	<style name="Row" mode="Transparent" fontName="Times New Roman" pdfFontName="Times-Roman">
+		<conditionalStyle>
+			<conditionExpression><![CDATA[$V{REPORT_COUNT}%2 == 0]]></conditionExpression>
+			<style mode="Opaque" backcolor="#F0EFEF"/>
+		</conditionalStyle>
+	</style>
+	<parameter name="p_dari" class="java.lang.Integer">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<parameter name="p_sampai" class="java.lang.Integer">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<queryString>
+		<![CDATA[SELECT
+     v_detil_pegawai.`id_pegawai` AS v_detil_pegawai_id_pegawai,
+     v_detil_pegawai.`nama` AS v_detil_pegawai_nama,
+     v_detil_pegawai.`alamat` AS v_detil_pegawai_alamat,
+     v_detil_pegawai.`divisi` AS v_detil_pegawai_divisi,
+     v_detil_pegawai.`jabatan` AS v_detil_pegawai_jabatan,
+     v_detil_pegawai.`honor_divisi` AS v_detil_pegawai_honor_divisi,
+     v_detil_pegawai.`gaji_pokok` AS v_detil_pegawai_gaji_pokok,
+     v_detil_pegawai.`tunj_jabatan` AS v_detil_pegawai_tunj_jabatan,
+     v_detil_pegawai.`tunj_anak` AS v_detil_pegawai_tunj_anak,
+     v_detil_pegawai.`tunj_kesehatan` AS v_detil_pegawai_tunj_kesehatan,
+     v_detil_pegawai.`perj_dinas` AS v_detil_pegawai_perj_dinas
+FROM
+     `v_detil_pegawai` v_detil_pegawai
+where  
+v_detil_pegawai.`id_pegawai` between $P{p_dari} and $P{p_sampai}]]>
+	</queryString>
+	<field name="v_detil_pegawai_id_pegawai" class="java.lang.Integer"/>
+	<field name="v_detil_pegawai_nama" class="java.lang.String"/>
+	<field name="v_detil_pegawai_alamat" class="java.lang.String"/>
+	<field name="v_detil_pegawai_divisi" class="java.lang.String"/>
+	<field name="v_detil_pegawai_jabatan" class="java.lang.String"/>
+	<field name="v_detil_pegawai_honor_divisi" class="java.lang.Long"/>
+	<field name="v_detil_pegawai_gaji_pokok" class="java.lang.Long"/>
+	<field name="v_detil_pegawai_tunj_jabatan" class="java.lang.Long"/>
+	<field name="v_detil_pegawai_tunj_anak" class="java.lang.Long"/>
+	<field name="v_detil_pegawai_tunj_kesehatan" class="java.lang.Long"/>
+	<field name="v_detil_pegawai_perj_dinas" class="java.lang.Long"/>
+	<filterExpression><![CDATA[$P{p_dari}]]></filterExpression>
+	<group name="v_detil_pegawai_divisi">
+		<groupExpression><![CDATA[$F{v_detil_pegawai_divisi}]]></groupExpression>
+		<groupHeader>
+			<band height="26">
+				<textField isStretchWithOverflow="true">
+					<reportElement style="SubTitle" isPrintRepeatedValues="false" x="2" y="2" width="624" height="18" forecolor="#000000" uuid="48e5e9ed-0d2e-4cdc-b5a3-8f07492fdd54"/>
+					<textElement>
+						<font fontName="Arial" size="10" isBold="true"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{v_detil_pegawai_divisi}]]></textFieldExpression>
+				</textField>
+				<line>
+					<reportElement x="2" y="16" width="624" height="1" uuid="397e810b-084e-4cfd-a943-22efc9d0d31f"/>
+				</line>
+			</band>
+		</groupHeader>
+		<groupFooter>
+			<band height="6"/>
+		</groupFooter>
+	</group>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="23" splitType="Stretch">
+			<staticText>
+				<reportElement x="0" y="0" width="100" height="20" uuid="e45a4e76-25e6-456e-9f46-d0a4a7d91aac"/>
+				<textElement>
+					<font size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[DATA PEGAWAI]]></text>
+			</staticText>
+		</band>
+	</title>
+	<pageHeader>
+		<band splitType="Stretch"/>
+	</pageHeader>
+	<columnHeader>
+		<band height="26" splitType="Stretch">
+			<staticText>
+				<reportElement style="Column header" x="0" y="7" width="55" height="18" forecolor="#000000" uuid="b0b6c14b-d711-479b-a06a-2c3d7e1c113f"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Arial" size="10" isBold="false"/>
+				</textElement>
+				<text><![CDATA[#]]></text>
+			</staticText>
+			<staticText>
+				<reportElement style="Column header" x="55" y="7" width="110" height="18" forecolor="#000000" uuid="9a7b6cf8-5ba1-4aa5-983a-e861bb7025ef"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Arial" size="10" isBold="false"/>
+				</textElement>
+				<text><![CDATA[Nama]]></text>
+			</staticText>
+			<staticText>
+				<reportElement style="Column header" x="165" y="7" width="55" height="18" forecolor="#000000" uuid="c253437f-26c9-4ecc-b671-100d5d30c8e6"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Arial" size="10" isBold="false"/>
+				</textElement>
+				<text><![CDATA[Jabatan]]></text>
+			</staticText>
+			<staticText>
+				<reportElement style="Column header" x="222" y="8" width="55" height="18" forecolor="#000000" uuid="8de22955-d142-4955-8a85-ba74bde0a77b"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Arial" size="10" isBold="false"/>
+				</textElement>
+				<text><![CDATA[Honor]]></text>
+			</staticText>
+			<staticText>
+				<reportElement style="Column header" x="295" y="8" width="55" height="18" forecolor="#000000" uuid="73bea566-93a9-480d-ab13-b953b47187e1"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Arial" size="10" isBold="false"/>
+				</textElement>
+				<text><![CDATA[Gaji]]></text>
+			</staticText>
+			<staticText>
+				<reportElement style="Column header" x="361" y="7" width="55" height="18" forecolor="#000000" uuid="e8515cd1-b13d-4c33-a3c0-1d51cd0fc260"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Arial" size="10" isBold="false"/>
+				</textElement>
+				<text><![CDATA[Jabatan]]></text>
+			</staticText>
+			<staticText>
+				<reportElement style="Column header" x="425" y="8" width="55" height="18" forecolor="#000000" uuid="d13d767e-401b-4671-a29e-e301487c6d6c"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Arial" size="10" isBold="false"/>
+				</textElement>
+				<text><![CDATA[Anak]]></text>
+			</staticText>
+			<staticText>
+				<reportElement style="Column header" x="484" y="7" width="55" height="18" forecolor="#000000" uuid="de1ca2b6-badf-43bd-9196-7998d79ec411"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Arial" size="10" isBold="false"/>
+				</textElement>
+				<text><![CDATA[Kesehatan]]></text>
+			</staticText>
+			<staticText>
+				<reportElement style="Column header" x="555" y="7" width="55" height="18" forecolor="#000000" uuid="f6ea55e1-e005-4830-955f-95933a15a162"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Arial" size="10" isBold="false"/>
+				</textElement>
+				<text><![CDATA[P. Dinas]]></text>
+			</staticText>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="19" splitType="Stretch">
+			<textField isStretchWithOverflow="true">
+				<reportElement style="Detail" positionType="Float" x="555" y="0" width="71" height="18" uuid="4004da3d-6af6-499d-b7a8-c7bd522ead3f"/>
+				<textElement>
+					<font fontName="Arial" size="10"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{v_detil_pegawai_perj_dinas}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true">
+				<reportElement style="Detail" positionType="Float" x="484" y="0" width="71" height="18" uuid="b2749ef7-57bd-4775-9eaf-900741e1df1a"/>
+				<textElement>
+					<font fontName="Arial" size="10"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{v_detil_pegawai_tunj_kesehatan}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true">
+				<reportElement style="Detail" positionType="Float" x="424" y="0" width="60" height="18" uuid="3f999ca0-5d95-4232-8d7a-9e66f07e699f"/>
+				<textElement>
+					<font fontName="Arial" size="10"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{v_detil_pegawai_tunj_anak}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true">
+				<reportElement style="Detail" positionType="Float" x="2" y="0" width="53" height="18" uuid="16b76126-4284-4995-a334-295f5b501bd3"/>
+				<textElement>
+					<font fontName="Arial" size="10"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{v_detil_pegawai_id_pegawai}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true">
+				<reportElement style="Detail" positionType="Float" x="55" y="0" width="110" height="18" uuid="192bc6ed-0778-4573-b719-77ceff2dc6f1"/>
+				<textElement>
+					<font fontName="Arial" size="10"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{v_detil_pegawai_nama}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true">
+				<reportElement style="Detail" positionType="Float" x="165" y="0" width="73" height="18" uuid="9c5556d6-d11a-45cf-a15e-41036cdc52e5"/>
+				<textElement>
+					<font fontName="Arial" size="10"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{v_detil_pegawai_jabatan}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true">
+				<reportElement style="Detail" positionType="Float" x="238" y="0" width="66" height="18" uuid="50c7652b-6bfc-481a-8aaa-caffbda91425"/>
+				<textElement>
+					<font fontName="Arial" size="10"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{v_detil_pegawai_honor_divisi}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true">
+				<reportElement style="Detail" positionType="Float" x="304" y="0" width="62" height="18" uuid="df076786-6240-4a3e-9562-ac789e31b462"/>
+				<textElement>
+					<font fontName="Arial" size="10"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{v_detil_pegawai_gaji_pokok}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true">
+				<reportElement style="Detail" positionType="Float" x="368" y="0" width="58" height="18" uuid="24b9febb-8e8a-4482-8585-8b361eedaa26"/>
+				<textElement>
+					<font fontName="Arial" size="10"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{v_detil_pegawai_tunj_jabatan}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<columnFooter>
+		<band splitType="Stretch">
+			<line>
+				<reportElement positionType="FixRelativeToBottom" x="2" y="-98" width="610" height="1" uuid="11275180-0ae5-44b0-b0ab-cdf19837cb5a"/>
+				<graphicElement>
+					<pen lineWidth="0.5" lineColor="#999999"/>
+				</graphicElement>
+			</line>
+		</band>
+	</columnFooter>
+	<pageFooter>
+		<band height="25" splitType="Stretch"/>
+	</pageFooter>
+	<summary>
+		<band splitType="Stretch"/>
+	</summary>
+</jasperReport>
