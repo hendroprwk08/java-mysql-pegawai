@@ -34,7 +34,7 @@
      v_detil_pegawai.`perj_dinas` AS v_detil_pegawai_perj_dinas
 FROM
      `v_detil_pegawai` v_detil_pegawai
-where  
+where 
 v_detil_pegawai.`id_pegawai` between $P{p_dari} and $P{p_sampai}]]>
 	</queryString>
 	<field name="v_detil_pegawai_id_pegawai" class="java.lang.Integer"/>
@@ -48,7 +48,6 @@ v_detil_pegawai.`id_pegawai` between $P{p_dari} and $P{p_sampai}]]>
 	<field name="v_detil_pegawai_tunj_anak" class="java.lang.Long"/>
 	<field name="v_detil_pegawai_tunj_kesehatan" class="java.lang.Long"/>
 	<field name="v_detil_pegawai_perj_dinas" class="java.lang.Long"/>
-	<filterExpression><![CDATA[$P{p_dari}]]></filterExpression>
 	<group name="v_detil_pegawai_divisi">
 		<groupExpression><![CDATA[$F{v_detil_pegawai_divisi}]]></groupExpression>
 		<groupHeader>
