@@ -3,8 +3,7 @@ package pegawai_app;
 public class Divisi {
     int id, honor;
     String divisi;
-
-    
+ 
     public Divisi(int id, int honor, String divisi) {
         this.id = id;
         this.honor = honor;

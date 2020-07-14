@@ -16,7 +16,7 @@
 	<parameter name="p_dari" class="java.lang.Integer">
 		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
 	</parameter>
-	<parameter name="p_sampai" class="java.lang.Integer">
+	<parameter name="p_hingga" class="java.lang.Integer">
 		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
 	</parameter>
 	<queryString>
@@ -26,11 +26,7 @@
      divisi.`honor` AS divisi_honor
 FROM
      `divisi` divisi
-where 
-divisi.`id_divisi` 
-between 
-$P{p_dari} 
-and $P{p_sampai}]]>
+where  divisi.`id_divisi` between $P{p_dari} and $P{p_hingga}]]>
 	</queryString>
 	<field name="divisi_id_divisi" class="java.lang.Integer"/>
 	<field name="divisi_divisi" class="java.lang.String"/>

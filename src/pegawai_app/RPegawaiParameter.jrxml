@@ -16,7 +16,7 @@
 	<parameter name="p_dari" class="java.lang.Integer">
 		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
 	</parameter>
-	<parameter name="p_sampai" class="java.lang.Integer">
+	<parameter name="p_hingga" class="java.lang.Integer">
 		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
 	</parameter>
 	<queryString>
@@ -34,8 +34,8 @@
      v_detil_pegawai.`perj_dinas` AS v_detil_pegawai_perj_dinas
 FROM
      `v_detil_pegawai` v_detil_pegawai
-where 
-v_detil_pegawai.`id_pegawai` between $P{p_dari} and $P{p_sampai}]]>
+
+where v_detil_pegawai.`id_pegawai` between $P{p_dari} and $P{p_hingga}]]>
 	</queryString>
 	<field name="v_detil_pegawai_id_pegawai" class="java.lang.Integer"/>
 	<field name="v_detil_pegawai_nama" class="java.lang.String"/>

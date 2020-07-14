@@ -6,6 +6,8 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 import net.sf.jasperreports.engine.JRException;
 import net.sf.jasperreports.engine.JasperCompileManager;
@@ -13,82 +15,102 @@ import net.sf.jasperreports.engine.JasperFillManager;
 import net.sf.jasperreports.engine.JasperPrint;
 import net.sf.jasperreports.view.JasperViewer;
 
-
 public class FCetak extends javax.swing.JFrame {
 
     ArrayList<Divisi> arrDivisi = new ArrayList<>();
     ArrayList<Pegawai> arrPegawai = new ArrayList<>();
     
-    int idx,
-        id_pegawai_dari, 
-        id_pegawai_sampai,
-        id_divisi_dari,
-        id_divisi_sampai;
-            
     public FCetak() {
         initComponents();
         loadData();
         nonAktif();
+        loadDivisi();
     }
     
-    private void loadData(){
+    void loadData(){
+        /*
+        untuk mengambil data dari tabel, kemudian
+        tampung pada class Divisi dan Pegawai
+        */
+        
         ResultSet rs;
         
         try {
-            //Data Divisi
-            rs = DB.read( "select * from divisi" );
+            rs = DB.read("select * from divisi");
             
-            //masukkan kedalam class Divisi ( tampung )
-            if ( arrDivisi.size() > 0 ) arrDivisi.removeAll(arrDivisi);
+            //tampung kedalam class Divisi berupa array list
+            if ( arrDivisi.size() > 0 ) 
+                arrDivisi.removeAll(arrDivisi); //bersihkan
             
+            //tampung 
             while( rs.next() ){
-                arrDivisi.add( new Divisi( Integer.parseInt ( rs.getString("id_divisi") ),
-                                        Integer.parseInt ( rs.getString("honor") ),
-                                        rs.getString("divisi")));
+                arrDivisi.add(new Divisi(
+                    Integer.parseInt( rs.getString("id_divisi") ),
+                    Integer.parseInt( rs.getString("honor") ),
+                    rs.getString("divisi")
+                ));
             }
             
-            //Data Pegawai
-            rs = DB.read( "select id_pegawai, nama from pegawai" );
+            //ambil data pegawai dan tampung kedalam class berupa array list
+            rs = DB.read("select id_pegawai, nama from pegawai");
             
-            //masukkan kedalam class Pegawai ( tampung )
-            if ( arrPegawai.size() > 0 ) arrPegawai.removeAll(arrPegawai);
-                            
+            //tampung kedalam class Divisi berupa array list
+            if ( arrPegawai.size() > 0 ) 
+                arrPegawai.removeAll(arrPegawai); //bersihkan
+            
+            //tampung 
             while( rs.next() ){
-                arrPegawai.add( new Pegawai( Integer.parseInt(rs.getString("id_pegawai")),
-                                         rs.getString("nama") ) );
+                arrPegawai.add(new Pegawai(
+                    Integer.parseInt( rs.getString("id_pegawai") ),
+                    rs.getString("nama")
+                ));
             }
+            
         } catch (SQLException ex) {
-            JOptionPane.showMessageDialog(null, ex.toString());
+            JOptionPane.showMessageDialog( null, ex.toString() );
         }
+        
     }
     
-    private void loadDivisi(){
-        cbx_dari.removeAllItems();
-        cbx_hingga.removeAllItems();
-            
-        //ambil dari class divisi dan munculkan pada combo box cbx_divisi
-        for( int i = 0; i < arrDivisi.size(); i++ ){
-            cbx_dari.addItem( arrDivisi.get( i ).getId() +" - " + arrDivisi.get( i ).getDivisi());
-            cbx_hingga.addItem( arrDivisi.get( i ).getId() +" - " + arrDivisi.get( i ).getDivisi());
-        }
-    }
-    
-    private void loadPegawai(){
+    void loadDivisi(){
+        //data yang ada pada array list diletakkan pada combo box
         cbx_dari.removeAllItems();
         cbx_hingga.removeAllItems();
         
-        //ambil dari class pegawai dan munculkan pada combo box cbx_divisi
-        for( int i = 0; i < arrPegawai.size(); i++ ){
-            cbx_dari.addItem( arrPegawai.get( i ).getId() +" - " + arrPegawai.get( i ).getNama());
-            cbx_hingga.addItem( arrPegawai.get( i ).getId() +" - " + arrPegawai.get( i ).getNama());
+        for (Divisi arrDivisi1 : arrDivisi) {
+            cbx_dari.addItem(arrDivisi1.getId() + " - " + arrDivisi1.getDivisi());
+            cbx_hingga.addItem(arrDivisi1.getId() + " - " + arrDivisi1.getDivisi());
         }
     }
+    
+    void loadPegawai(){
+        //data yang ada pada array list diletakkan pada combo box
+        cbx_dari.removeAllItems();
+        cbx_hingga.removeAllItems();
+        
+        for (Pegawai arrPegawai1 : arrPegawai) {
+            cbx_dari.addItem(arrPegawai1.getId() + " - " + arrPegawai1.getNama());
+            cbx_hingga.addItem(arrPegawai1.getId() + " - " + arrPegawai1.getNama());
+        }
+    }
+    
+    void aktif(){
+        cbx_dari.setEnabled( true );
+        cbx_hingga.setEnabled( true );
+    }
+    
+    void nonAktif(){
+        cbx_dari.setEnabled( false );
+        cbx_hingga.setEnabled( false );
+    }
+    
     
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
      * regenerated by the Form Editor.
      */
+    
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
@@ -170,28 +192,29 @@ public class FCetak extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void cbx_pilihActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cbx_pilihActionPerformed
-        idx = cbx_pilih.getSelectedIndex();
+        int idx = cbx_pilih.getSelectedIndex();
         
         if ( idx == 0 ){
             nonAktif();
-        }else if( idx == 1 ){
+            loadDivisi();
+        }else if ( idx == 1 ){
             aktif();
             loadDivisi();
-        }else if( idx == 2 ){
+        }else if ( idx == 2 ){
             nonAktif();
-        }else if( idx == 3 ){
+            loadPegawai();
+        }else{
             aktif();
             loadPegawai();
         }
     }//GEN-LAST:event_cbx_pilihActionPerformed
 
     private void bt_cetakActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bt_cetakActionPerformed
+        //cetak laporan sesuai pilihan
+        int idx = cbx_pilih.getSelectedIndex();
         String dir = System.getProperty("user.dir"); //lokasi project
-        int idxDari = cbx_dari.getSelectedIndex();
-        int idxHingga = cbx_hingga.getSelectedIndex();
-
         JasperPrint jp;
-           
+        
         if ( idx == 0 ){
             try {
                 JasperCompileManager.compileReportToFile(
@@ -208,24 +231,24 @@ public class FCetak extends javax.swing.JFrame {
                 JOptionPane.showMessageDialog(rootPane, ex.toString());
             }
         }else if( idx == 1 ){
+            //fiter berdasarkan id_divisi
             try {
                 JasperCompileManager.compileReportToFile(
                         dir + "/src/pegawai_app/RDivisiParameter.jrxml",
                         dir + "/src/pegawai_app/RDivisiParameter.jasper");
 
-                //ambil id
-                id_divisi_dari = arrDivisi.get(idxDari).getId();
-                id_divisi_sampai = arrDivisi.get(idxHingga).getId();
-            
                 //parameter
                 Map parameters = new HashMap();
-                parameters.put("p_dari",  id_divisi_dari);
-                parameters.put("p_sampai", id_divisi_sampai);
+                int idx_dari = cbx_dari.getSelectedIndex();
+                int idx_hingga = cbx_hingga.getSelectedIndex();
+                
+                parameters.put("p_dari", arrDivisi.get( idx_dari ).getId());
+                parameters.put("p_hingga", arrDivisi.get( idx_hingga ).getId());
                 
                 jp = JasperFillManager.fillReport(
-                        getClass().getResourceAsStream("RDivisiParameter.jasper"),
-                        parameters,
-                        DB.connectDB());
+                getClass().getResourceAsStream("RDivisiParameter.jasper"),
+                parameters,
+                DB.connectDB());
 
                 JasperViewer.viewReport(jp, false);
             } catch (JRException | SQLException ex) {
@@ -246,25 +269,25 @@ public class FCetak extends javax.swing.JFrame {
             } catch (JRException | SQLException ex) {
                 JOptionPane.showMessageDialog(rootPane, ex.toString());
             }
-        }else if( idx == 3 ){
+        }else{
+            //fiter berdasarkan id_pegawai
             try {
                 JasperCompileManager.compileReportToFile(
                         dir + "/src/pegawai_app/RPegawaiParameter.jrxml",
                         dir + "/src/pegawai_app/RPegawaiParameter.jasper");
 
-                //ambil id
-                id_pegawai_dari = arrPegawai.get(idxDari).getId();
-                id_pegawai_sampai = arrPegawai.get(idxHingga).getId();
-            
                 //parameter
                 Map parameters = new HashMap();
-                parameters.put("p_dari", id_pegawai_dari);
-                parameters.put("p_sampai", id_pegawai_sampai);
+                int idx_dari = cbx_dari.getSelectedIndex();
+                int idx_hingga = cbx_hingga.getSelectedIndex();
+                
+                parameters.put("p_dari", arrPegawai.get( idx_dari ).getId());
+                parameters.put("p_hingga", arrPegawai.get( idx_hingga ).getId());
                 
                 jp = JasperFillManager.fillReport(
-                    getClass().getResourceAsStream("RPegawaiParameter.jasper"),
-                    parameters,
-                    DB.connectDB());
+                getClass().getResourceAsStream("RPegawaiParameter.jasper"),
+                parameters,
+                DB.connectDB());
 
                 JasperViewer.viewReport(jp, false);
             } catch (JRException | SQLException ex) {
@@ -273,17 +296,6 @@ public class FCetak extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_bt_cetakActionPerformed
 
-    public void aktif(){
-        cbx_dari.setEnabled(true);
-        cbx_hingga.setEnabled(true);
-    }
-    
-    public void nonAktif(){
-        cbx_dari.setEnabled(false);
-        cbx_hingga.setEnabled(false);
-    }
-    
-    
     /**
      * @param args the command line arguments
      */
@@ -328,4 +340,5 @@ public class FCetak extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     // End of variables declaration//GEN-END:variables
+
 }
